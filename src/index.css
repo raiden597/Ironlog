@@ -10,6 +10,9 @@
     color: #f0f0f0;
     font-family: 'Manrope', sans-serif;
     min-height: 100vh;
+    padding-left:   env(safe-area-inset-left);
+    padding-right:  env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   /* Scrollbar */
@@ -108,4 +111,8 @@
     transition: border-color .15s;
   }
   .ex-row:hover { border-color: #2a2a2a; }
+}
+
+header {
+  padding-top: env(safe-area-inset-top);
 }
