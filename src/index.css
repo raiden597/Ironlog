@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #080808;
+    color: #f0f0f0;
+    font-family: 'Manrope', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar       { width: 4px; }
+  ::-webkit-scrollbar-track { background: #111; }
+  ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+
+  /* Date picker icon */
+  input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(.4); }
+
+  /* Checkbox accent */
+  input[type="checkbox"] { accent-color: #c8ff00; }
+}
+
+@layer components {
+  /* Typography helpers */
+  .fd   { font-family: 'Bebas Neue', sans-serif; letter-spacing: .05em; }
+  .fm   { font-family: 'IBM Plex Mono', monospace; }
+
+  /* Cards */
+  .card {
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 12px;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: #2e2e2e; }
+
+  /* Buttons */
+  .btn-p {
+    background: #c8ff00; color: #080808; font-weight: 700;
+    border: none; cursor: pointer; border-radius: 8px;
+    padding: 10px 20px; font-family: 'Manrope', sans-serif;
+    font-size: 13px; letter-spacing: .03em;
+    transition: opacity .15s, transform .1s;
+  }
+  .btn-p:hover  { opacity: .9; transform: translateY(-1px); }
+  .btn-p:active { transform: translateY(0); }
+
+  .btn-g {
+    background: transparent; color: #888;
+    border: 1px solid #252525; cursor: pointer; border-radius: 8px;
+    padding: 8px 14px; font-family: 'Manrope', sans-serif; font-size: 13px;
+    transition: border-color .15s, color .15s;
+  }
+  .btn-g:hover { border-color: #444; color: #f0f0f0; }
+
+  .btn-d {
+    background: transparent; color: #ff4757;
+    border: 1px solid rgba(255,71,87,.13); cursor: pointer; border-radius: 8px;
+    padding: 8px 14px; font-family: 'Manrope', sans-serif; font-size: 13px;
+    transition: background .15s, border-color .15s;
+  }
+  .btn-d:hover { background: rgba(255,71,87,.06); border-color: #ff4757; }
+
+  /* Inputs */
+  .inp {
+    background: #161616; border: 1px solid #252525; border-radius: 8px;
+    color: #f0f0f0; padding: 9px 13px;
+    font-family: 'Manrope', sans-serif; font-size: 13px;
+    width: 100%; outline: none; transition: border-color .15s;
+  }
+  .inp:focus       { border-color: #c8ff00; }
+  .inp::placeholder { color: #383838; }
+  select.inp option { background: #161616; color: #f0f0f0; }
+
+  /* Chips */
+  .tag {
+    background: rgba(200,255,0,.07); color: #c8ff00;
+    border: 1px solid rgba(200,255,0,.17); border-radius: 6px;
+    padding: 2px 8px; font-size: 11px; font-family: 'IBM Plex Mono', monospace;
+  }
+  .pill {
+    background: #1a1a1a; border: 1px solid #222; border-radius: 7px;
+    padding: 3px 9px; font-size: 11px; color: #666; font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* Nav buttons */
+  .nav-btn {
+    color: #555; font-size: 12px; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; padding: 7px 14px; border-radius: 7px;
+    cursor: pointer; border: none; background: transparent;
+    font-family: 'Manrope', sans-serif; transition: color .15s, background .15s;
+  }
+  .nav-btn:hover    { color: #f0f0f0; background: #1a1a1a; }
+  .nav-btn.active   { color: #c8ff00; background: rgba(200,255,0,.08); }
+
+  /* Progress bar */
+  .pb-track { background: #1c1c1c; height: 3px; border-radius: 2px; overflow: hidden; }
+  .pb-fill  { background: #c8ff00; height: 100%; border-radius: 2px; transition: width .4s ease; }
+
+  /* Exercise row in form */
+  .ex-row {
+    background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 9px;
+    padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+    transition: border-color .15s;
+  }
+  .ex-row:hover { border-color: #2a2a2a; }
+}
