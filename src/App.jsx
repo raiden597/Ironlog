@@ -6,33 +6,30 @@ import WorkoutForm    from './components/WorkoutForm'
 import LogModal       from './components/LogModal'
 import WorkoutHistory from './components/WorkoutHistory'
 import ProgressChart  from './components/ProgressChart'
-import Badges from './components/Badges'
+import Badges         from './components/Badges'
 
-import { lsGet, lsSet }            from './utils/storage'
-import { uid, todayStr }           from './utils/helpers'
+import { lsGet, lsSet }             from './utils/storage'
+import { uid, todayStr }            from './utils/helpers'
 import { SEED_ROUTINES, SEED_LOGS } from './data/seed'
 
-/**
- * App — root component.
- * Owns all global state (routines + logs) and persists it to localStorage.
- * Renders the header, stats bar, and the active view.
- */
+const NAV = [
+  ['dashboard', 'Routines', '🏠'],
+  ['history',   'History',  '📋'],
+  ['progress',  'Progress', '📈'],
+  ['badges',    'Badges',   '🏅'],
+]
+
 export default function App() {
-  // ── State — seeded from localStorage on first load ──
   const [routines, setRoutines] = useState(() => lsGet('il_routines', SEED_ROUTINES))
   const [logs,     setLogs]     = useState(() => lsGet('il_logs',     SEED_LOGS))
-
-  // ── View state ──
-  const [view,     setView]     = useState('dashboard') // 'dashboard' | 'history' | 'progress'
+  const [view,     setView]     = useState('dashboard')
   const [showForm, setShowForm] = useState(false)
-  const [editR,    setEditR]    = useState(null)  // routine being edited (null = new)
-  const [logR,     setLogR]     = useState(null)  // routine being logged
+  const [editR,    setEditR]    = useState(null)
+  const [logR,     setLogR]     = useState(null)
 
-  // ── Persist to localStorage on every change ──
   useEffect(() => lsSet('il_routines', routines), [routines])
   useEffect(() => lsSet('il_logs',     logs),     [logs])
 
-  // ── Routine handlers ──
   const saveRoutine = useCallback(r => {
     setRoutines(rs => rs.some(x => x.id === r.id) ? rs.map(x => x.id === r.id ? r : x) : [r, ...rs])
     setShowForm(false)
@@ -54,11 +51,9 @@ export default function App() {
     }, ...rs])
   }, [])
 
-  // ── Log handlers ──
   const saveLog   = useCallback(l => { setLogs(ls => [l, ...ls]); setLogR(null) }, [])
   const deleteLog = useCallback(id => setLogs(ls => ls.filter(l => l.id !== id)), [])
 
-  // ── Dashboard stats ──
   const stats = useMemo(() => {
     const now     = new Date()
     const weekAgo = new Date(now)
@@ -76,7 +71,6 @@ export default function App() {
   return (
     <div style={{ minHeight: '100vh', background: '#080808' }}>
 
-      {/* ════ MODALS ════ */}
       <AnimatePresence>
         {showForm && (
           <WorkoutForm
@@ -97,20 +91,18 @@ export default function App() {
       </AnimatePresence>
 
       {/* ════ HEADER ════ */}
-      <header style={{ borderBottom: '1px solid #141414', background: 'rgba(8,8,8,.95)', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(10px)' }}>
+      <header style={{ borderBottom: '1px solid #141414', background: 'rgba(8,8,8,.95)', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(10px)', paddingTop: 'env(safe-area-inset-top)' }}>
         <div style={{ maxWidth: 1060, margin: '0 auto', padding: '0 18px', display: 'flex', alignItems: 'center', gap: 12, height: 56 }}>
-
-          {/* Wordmark */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginRight: 6 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexShrink: 0 }}>
             <div style={{ width: 6, height: 26, background: '#c8ff00', borderRadius: 2 }} />
             <span className="fd" style={{ fontSize: 22, lineHeight: 1 }}>
               IRON<span style={{ color: '#c8ff00' }}>LOG</span>
             </span>
           </div>
 
-          {/* Navigation */}
-          <nav style={{ display: 'flex', gap: 1 }}>
-            {[['dashboard', 'Routines'], ['history', 'History'], ['progress', 'Progress'], ['badges', 'Badges']].map(([id, label]) => (
+          {/* Desktop nav only */}
+          <nav className="desktop-nav" style={{ display: 'flex', gap: 1 }}>
+            {NAV.map(([id, label]) => (
               <button
                 key={id}
                 className={`nav-btn${view === id ? ' active' : ''}`}
@@ -123,7 +115,6 @@ export default function App() {
 
           <div style={{ flex: 1 }} />
 
-          {/* New Routine — only shown on dashboard */}
           {view === 'dashboard' && (
             <button
               className="btn-p"
@@ -137,9 +128,8 @@ export default function App() {
       </header>
 
       {/* ════ MAIN ════ */}
-      <main style={{ maxWidth: 1060, margin: '0 auto', padding: '18px 18px 60px' }}>
+      <main style={{ maxWidth: 1060, margin: '0 auto', padding: '18px 18px 100px' }}>
 
-        {/* ── Stats bar ── */}
         <div style={{ display: 'flex', gap: 9, marginBottom: 22, flexWrap: 'wrap' }}>
           {[
             ['ROUTINES',  stats.routines],
@@ -147,23 +137,18 @@ export default function App() {
             ['THIS WEEK', stats.thisWeek],
             ['TOTAL VOL', stats.volume > 0 ? `${(stats.volume / 1000).toFixed(1)}t` : '—'],
           ].map(([label, value]) => (
-            <div
-              key={label}
-              style={{ flex: '1 1 80px', background: '#0e0e0e', border: '1px solid #191919', borderRadius: 9, padding: '11px 14px' }}
-            >
+            <div key={label} style={{ flex: '1 1 80px', background: '#0e0e0e', border: '1px solid #191919', borderRadius: 9, padding: '11px 14px' }}>
               <div style={{ fontSize: 9, color: '#3a3a3a', letterSpacing: '.1em', marginBottom: 3 }}>{label}</div>
               <div className="fd" style={{ fontSize: 24, lineHeight: 1 }}>{value}</div>
             </div>
           ))}
         </div>
 
-        {/* ── VIEW: DASHBOARD ── */}
         {view === 'dashboard' && (
           <div>
             <div style={{ fontSize: 11, color: '#3a3a3a', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 14 }}>
               Your Routines · {routines.length}
             </div>
-
             {routines.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '80px 20px' }}>
                 <div className="fd" style={{ fontSize: 52, color: '#1c1c1c', marginBottom: 10 }}>NO ROUTINES YET</div>
@@ -174,9 +159,7 @@ export default function App() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(290px,1fr))', gap: 14 }}>
                 {routines.map((r, i) => (
                   <WorkoutCard
-                    key={r.id}
-                    routine={r}
-                    idx={i}
+                    key={r.id} routine={r} idx={i}
                     onEdit={r => { setEditR(r); setShowForm(true) }}
                     onDelete={deleteRoutine}
                     onLog={setLogR}
@@ -188,7 +171,6 @@ export default function App() {
           </div>
         )}
 
-        {/* ── VIEW: HISTORY ── */}
         {view === 'history' && (
           <div>
             <div style={{ fontSize: 11, color: '#3a3a3a', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 14 }}>
@@ -198,7 +180,6 @@ export default function App() {
           </div>
         )}
 
-        {/* ── VIEW: PROGRESS ── */}
         {view === 'progress' && (
           <div>
             <div style={{ fontSize: 11, color: '#3a3a3a', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 14 }}>
@@ -214,18 +195,59 @@ export default function App() {
             )}
           </div>
         )}
-        
-        {/* ── VIEW: BADGES ── */}
+
         {view === 'badges' && (
           <div>
             <div style={{ fontSize: 11, color: '#3a3a3a', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 14 }}>
-               Milestone Badges
+              Milestone Badges
             </div>
-          <Badges logs={logs} />
+            <Badges logs={logs} />
           </div>
         )}
 
       </main>
+
+      {/* ════ BOTTOM TAB BAR (mobile only) ════ */}
+      <nav className="bottom-nav" style={{
+        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50,
+        background: 'rgba(8,8,8,.97)', borderTop: '1px solid #1a1a1a',
+        backdropFilter: 'blur(12px)',
+        paddingBottom: 'env(safe-area-inset-bottom)',
+        display: 'flex',
+      }}>
+        {NAV.map(([id, label, icon]) => (
+          <button
+            key={id}
+            onClick={() => setView(id)}
+            style={{
+              flex: 1, background: 'none', border: 'none', cursor: 'pointer',
+              padding: '10px 0 8px', display: 'flex', flexDirection: 'column',
+              alignItems: 'center', gap: 4,
+              color: view === id ? '#c8ff00' : '#444',
+              transition: 'color .15s',
+            }}
+          >
+            <span style={{ fontSize: 20, lineHeight: 1 }}>{icon}</span>
+            <span style={{ fontSize: 10, fontFamily: 'Manrope', fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase' }}>
+              {label}
+            </span>
+          </button>
+        ))}
+        {/* Floating + button for new routine */}
+        <button
+          onClick={() => { setView('dashboard'); setEditR(null); setShowForm(true) }}
+          style={{
+            flex: 1, background: 'none', border: 'none', cursor: 'pointer',
+            padding: '10px 0 8px', display: 'flex', flexDirection: 'column',
+            alignItems: 'center', gap: 4, color: '#c8ff00',
+            transition: 'color .15s',
+          }}
+        >
+          <span style={{ fontSize: 22, lineHeight: 1, fontWeight: 300 }}>＋</span>
+          <span style={{ fontSize: 10, fontFamily: 'Manrope', fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase' }}>New</span>
+        </button>
+      </nav>
+
     </div>
   )
 }

@@ -116,3 +116,10 @@
 header {
   padding-top: env(safe-area-inset-top);
 }
+ /* Responsive nav visibility */
+@media (min-width: 640px) {
+  .bottom-nav  { display: none !important; }
+}
+@media (max-width: 639px) {
+  .desktop-nav { display: none !important; }
+}
