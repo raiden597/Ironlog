@@ -6,6 +6,7 @@ import WorkoutForm    from './components/WorkoutForm'
 import LogModal       from './components/LogModal'
 import WorkoutHistory from './components/WorkoutHistory'
 import ProgressChart  from './components/ProgressChart'
+import Badges from './components/Badges'
 
 import { lsGet, lsSet }            from './utils/storage'
 import { uid, todayStr }           from './utils/helpers'
@@ -109,7 +110,7 @@ export default function App() {
 
           {/* Navigation */}
           <nav style={{ display: 'flex', gap: 1 }}>
-            {[['dashboard', 'Routines'], ['history', 'History'], ['progress', 'Progress']].map(([id, label]) => (
+            {[['dashboard', 'Routines'], ['history', 'History'], ['progress', 'Progress'], ['badges', 'Badges']].map(([id, label]) => (
               <button
                 key={id}
                 className={`nav-btn${view === id ? ' active' : ''}`}
@@ -213,6 +214,17 @@ export default function App() {
             )}
           </div>
         )}
+        
+        {/* ── VIEW: BADGES ── */}
+        {view === 'badges' && (
+          <div>
+            <div style={{ fontSize: 11, color: '#3a3a3a', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 14 }}>
+               Milestone Badges
+            </div>
+          <Badges logs={logs} />
+          </div>
+        )}
+
       </main>
     </div>
   )
