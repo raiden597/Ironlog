@@ -233,19 +233,7 @@ export default function App() {
             </span>
           </button>
         ))}
-        {/* Floating + button for new routine */}
-        <button
-          onClick={() => { setView('dashboard'); setEditR(null); setShowForm(true) }}
-          style={{
-            flex: 1, background: 'none', border: 'none', cursor: 'pointer',
-            padding: '10px 0 8px', display: 'flex', flexDirection: 'column',
-            alignItems: 'center', gap: 4, color: '#c8ff00',
-            transition: 'color .15s',
-          }}
-        >
-          <span style={{ fontSize: 22, lineHeight: 1, fontWeight: 300 }}>＋</span>
-          <span style={{ fontSize: 10, fontFamily: 'Manrope', fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase' }}>New</span>
-        </button>
+        
       </nav>
 
     </div>
