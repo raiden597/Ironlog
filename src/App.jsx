@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Award, ClipboardList, LayoutGrid, LineChart, Plus } from 'lucide-react'
+import { Award, ClipboardList, LayoutGrid, LineChart, Plus, Timer } from 'lucide-react'
 
 import WorkoutCard    from './components/WorkoutCard'
 import WorkoutForm    from './components/WorkoutForm'
@@ -8,6 +8,7 @@ import LogModal       from './components/LogModal'
 import WorkoutHistory from './components/WorkoutHistory'
 import ProgressChart  from './components/ProgressChart'
 import Badges         from './components/Badges'
+import RestTimer      from './components/RestTimer'
 
 import { lsGet, lsSet }             from './utils/storage'
 import { uid, todayStr }            from './utils/helpers'
@@ -18,6 +19,7 @@ const NAV = [
   ['history',   'History',  ClipboardList],
   ['progress',  'Progress', LineChart],
   ['badges',    'Badges',   Award],
+  ['rest',      'Rest',     Timer],
 ]
 
 export default function App() {
@@ -218,6 +220,17 @@ export default function App() {
               Milestone Badges
             </div>
             <Badges logs={logs} />
+          </div>
+        )}
+
+        {view === 'rest' && (
+          <div>
+            <div style={{ fontSize: 11, color: '#3a3a3a', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 14 }}>
+              Between sets
+            </div>
+            <div style={{ maxWidth: 440 }}>
+              <RestTimer />
+            </div>
           </div>
         )}
           </motion.div>
