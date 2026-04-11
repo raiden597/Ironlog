@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 
 import WorkoutCard    from './components/WorkoutCard'
 import WorkoutForm    from './components/WorkoutForm'
@@ -91,7 +91,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* ════ HEADER ════ */}
-      <header style={{ borderBottom: '1px solid #141414', background: 'rgba(8,8,8,.95)', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(10px)', paddingTop: 'env(safe-area-inset-top)' }}>
+      <header className="app-header">
         <div style={{ maxWidth: 1060, margin: '0 auto', padding: '0 18px', display: 'flex', alignItems: 'center', gap: 12, height: 56 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexShrink: 0 }}>
             <div style={{ width: 6, height: 26, background: '#c8ff00', borderRadius: 2 }} />
@@ -105,8 +105,10 @@ export default function App() {
             {NAV.map(([id, label]) => (
               <button
                 key={id}
+                type="button"
                 className={`nav-btn${view === id ? ' active' : ''}`}
                 onClick={() => setView(id)}
+                aria-current={view === id ? 'page' : undefined}
               >
                 {label}
               </button>
@@ -117,6 +119,7 @@ export default function App() {
 
           {view === 'dashboard' && (
             <button
+              type="button"
               className="btn-p"
               onClick={() => { setEditR(null); setShowForm(true) }}
               style={{ padding: '7px 14px', fontSize: 12 }}
@@ -137,13 +140,21 @@ export default function App() {
             ['THIS WEEK', stats.thisWeek],
             ['TOTAL VOL', stats.volume > 0 ? `${(stats.volume / 1000).toFixed(1)}t` : '—'],
           ].map(([label, value]) => (
-            <div key={label} style={{ flex: '1 1 80px', background: '#0e0e0e', border: '1px solid #191919', borderRadius: 9, padding: '11px 14px' }}>
+            <div key={label} className="stat-tile">
               <div style={{ fontSize: 9, color: '#3a3a3a', letterSpacing: '.1em', marginBottom: 3 }}>{label}</div>
               <div className="fd" style={{ fontSize: 24, lineHeight: 1 }}>{value}</div>
             </div>
           ))}
         </div>
 
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={view}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          >
         {view === 'dashboard' && (
           <div>
             <div style={{ fontSize: 11, color: '#3a3a3a', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 14 }}>
@@ -153,7 +164,7 @@ export default function App() {
               <div style={{ textAlign: 'center', padding: '80px 20px' }}>
                 <div className="fd" style={{ fontSize: 52, color: '#1c1c1c', marginBottom: 10 }}>NO ROUTINES YET</div>
                 <p style={{ fontSize: 13, color: '#3a3a3a', marginBottom: 20 }}>Create your first workout routine to begin tracking</p>
-                <button className="btn-p" onClick={() => setShowForm(true)}>+ CREATE ROUTINE</button>
+                <button type="button" className="btn-p" onClick={() => setShowForm(true)}>+ CREATE ROUTINE</button>
               </div>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(290px,1fr))', gap: 14 }}>
@@ -204,6 +215,8 @@ export default function App() {
             <Badges logs={logs} />
           </div>
         )}
+          </motion.div>
+        </AnimatePresence>
 
       </main>
 
@@ -218,19 +231,13 @@ export default function App() {
         {NAV.map(([id, label, icon]) => (
           <button
             key={id}
+            type="button"
+            className={`bottom-nav-tab${view === id ? ' active' : ''}`}
             onClick={() => setView(id)}
-            style={{
-              flex: 1, background: 'none', border: 'none', cursor: 'pointer',
-              padding: '10px 0 8px', display: 'flex', flexDirection: 'column',
-              alignItems: 'center', gap: 4,
-              color: view === id ? '#c8ff00' : '#444',
-              transition: 'color .15s',
-            }}
+            aria-current={view === id ? 'page' : undefined}
           >
-            <span style={{ fontSize: 20, lineHeight: 1 }}>{icon}</span>
-            <span style={{ fontSize: 10, fontFamily: 'Manrope', fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase' }}>
-              {label}
-            </span>
+            <span className="bottom-nav-icon" aria-hidden>{icon}</span>
+            <span>{label}</span>
           </button>
         ))}
         

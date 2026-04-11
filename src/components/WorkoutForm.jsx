@@ -35,27 +35,31 @@ export default function WorkoutForm({ routine, onSave, onCancel }) {
 
   return (
     <motion.div
-      className="overlay"
+      className="modal-overlay"
+      role="presentation"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.88)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 16 }}
       onClick={e => e.target === e.currentTarget && onCancel()}
     >
       <motion.div
+        className="modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="routine-form-title"
         initial={{ opacity: 0, y: 16, scale: .97 }}
         animate={{ opacity: 1, y: 0,  scale: 1 }}
         exit={{ opacity: 0, y: 16, scale: .97 }}
-        transition={{ duration: 0.22 }}
-        style={{ background: '#111', border: '1px solid #222', borderRadius: 16, width: '100%', maxWidth: 580, maxHeight: '90vh', overflowY: 'auto' }}
+        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+        style={{ maxWidth: 580 }}
       >
         {/* Header */}
         <div style={{ padding: '22px 22px 0' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-            <h2 className="fd" style={{ fontSize: 26, color: '#c8ff00' }}>
+            <h2 id="routine-form-title" className="fd" style={{ fontSize: 26, color: '#c8ff00' }}>
               {routine ? 'EDIT ROUTINE' : 'NEW ROUTINE'}
             </h2>
-            <button className="btn-g" onClick={onCancel} style={{ padding: '5px 10px' }}>✕</button>
+            <button type="button" className="btn-g" onClick={onCancel} style={{ padding: '5px 10px' }} aria-label="Close">✕</button>
           </div>
 
           {/* Name field */}
@@ -99,6 +103,7 @@ export default function WorkoutForm({ routine, onSave, onCancel }) {
         {/* Footer */}
         <div style={{ padding: '14px 22px 22px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           <button
+            type="button"
             className="btn-g"
             onClick={addExercise}
             style={{ width: '100%', padding: 9, borderStyle: 'dashed', color: '#c8ff00', borderColor: 'rgba(200,255,0,.17)', fontSize: 12 }}
@@ -106,8 +111,8 @@ export default function WorkoutForm({ routine, onSave, onCancel }) {
             + ADD EXERCISE
           </button>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button className="btn-g" onClick={onCancel} style={{ flex: 1 }}>CANCEL</button>
-            <button className="btn-p" onClick={handleSave} style={{ flex: 2 }}>
+            <button type="button" className="btn-g" onClick={onCancel} style={{ flex: 1 }}>CANCEL</button>
+            <button type="button" className="btn-p" onClick={handleSave} style={{ flex: 2 }}>
               {routine ? 'SAVE CHANGES' : 'CREATE ROUTINE'}
             </button>
           </div>

@@ -50,7 +50,7 @@ export default function WorkoutHistory({ logs, onDeleteLog }) {
         </div>
 
         {dateFilter && (
-          <button className="btn-g" onClick={() => setDateFilter('')} style={{ padding: '7px 12px', fontSize: 12 }}>
+          <button type="button" className="btn-g" onClick={() => setDateFilter('')} style={{ padding: '7px 12px', fontSize: 12 }}>
             Clear
           </button>
         )}
@@ -92,7 +92,7 @@ export default function WorkoutHistory({ logs, onDeleteLog }) {
                         {volume > 0 && <span className="pill">{volume.toLocaleString()}kg vol</span>}
                       </div>
                     </div>
-                    <button className="btn-d" onClick={() => onDeleteLog(log.id)} style={{ padding: '5px 9px', fontSize: 12 }}>✕</button>
+                    <button type="button" className="btn-d" onClick={() => onDeleteLog(log.id)} style={{ padding: '5px 9px', fontSize: 12 }} aria-label="Delete log">✕</button>
                   </div>
 
                   {/* Completion bar */}

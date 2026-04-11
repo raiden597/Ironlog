@@ -63,7 +63,7 @@ export default function ExerciseItem({ ex, onChange, onDelete, idx }) {
         <option>lbs</option>
       </select>
       {/* Remove */}
-      <button className="btn-d" onClick={onDelete} style={{ padding: '6px 9px', flexShrink: 0, fontSize: 12 }}>
+      <button type="button" className="btn-d" onClick={onDelete} style={{ padding: '6px 9px', flexShrink: 0, fontSize: 12 }}>
         ✕
       </button>
     </motion.div>

@@ -79,7 +79,7 @@ export default function ProgressChart({ logs, routines }) {
       ) : (
         <>
           {/* ── Stat cards ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 9, marginBottom: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: 9, marginBottom: 14 }}>
             {[
               { label: 'SESSIONS', value: pts.length },
               { label: 'CURRENT',  value: `${pts[pts.length - 1].w}${pts[0].u}` },

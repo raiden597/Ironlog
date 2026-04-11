@@ -29,8 +29,18 @@ export default function WorkoutCard({ routine, onEdit, onDelete, onLog, onDuplic
     >
       {/* ── Clickable header ── */}
       <div
+        role="button"
+        tabIndex={0}
+        aria-expanded={expanded}
+        aria-label={`${routine.name}, ${expanded ? 'collapse' : 'expand'} exercise list`}
         style={{ padding: '17px 19px', cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: 10 }}
         onClick={() => setExpanded(!expanded)}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setExpanded(x => !x)
+          }
+        }}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
           <h3 className="fd" style={{ fontSize: 21, lineHeight: 1, marginBottom: 3 }}>{routine.name}</h3>
@@ -82,10 +92,10 @@ export default function WorkoutCard({ routine, onEdit, onDelete, onLog, onDuplic
 
       {/* ── Action bar ── */}
       <div style={{ padding: '11px 19px', borderTop: '1px solid #191919', display: 'flex', gap: 7, background: '#0c0c0c' }}>
-        <button className="btn-p" onClick={() => onLog(routine)}       style={{ flex: 1, padding: '7px 10px', fontSize: 12 }}>▶ LOG</button>
-        <button className="btn-g" onClick={() => onEdit(routine)}      style={{ padding: '7px 11px', fontSize: 13 }} title="Edit">✏</button>
-        <button className="btn-g" onClick={() => onDuplicate(routine)} style={{ padding: '7px 11px', fontSize: 13 }} title="Duplicate">⧉</button>
-        <button className="btn-d" onClick={() => onDelete(routine.id)} style={{ padding: '7px 11px', fontSize: 13 }} title="Delete">🗑</button>
+        <button type="button" className="btn-p" onClick={() => onLog(routine)}       style={{ flex: 1, padding: '7px 10px', fontSize: 12 }}>▶ LOG</button>
+        <button type="button" className="btn-g" onClick={() => onEdit(routine)}      style={{ padding: '7px 11px', fontSize: 13 }} title="Edit">✏</button>
+        <button type="button" className="btn-g" onClick={() => onDuplicate(routine)} style={{ padding: '7px 11px', fontSize: 13 }} title="Duplicate">⧉</button>
+        <button type="button" className="btn-d" onClick={() => onDelete(routine.id)} style={{ padding: '7px 11px', fontSize: 13 }} title="Delete">🗑</button>
       </div>
     </motion.div>
   )

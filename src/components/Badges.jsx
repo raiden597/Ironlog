@@ -17,7 +17,7 @@ export default function Badges({ logs }) {
           { label: 'CURRENT STREAK', value: `${current}d` },
           { label: 'BEST STREAK',  value: `${max}d` },
         ].map(s => (
-          <div key={s.label} style={{ flex: '1 1 80px', background: '#0e0e0e', border: '1px solid #191919', borderRadius: 9, padding: '11px 14px' }}>
+          <div key={s.label} className="stat-tile">
             <div style={{ fontSize: 9, color: '#3a3a3a', letterSpacing: '.1em', marginBottom: 3 }}>{s.label}</div>
             <div className="fd" style={{ fontSize: 24, lineHeight: 1, color: s.label === 'CURRENT STREAK' && current > 0 ? '#c8ff00' : '#f0f0f0' }}>
               {s.value}
