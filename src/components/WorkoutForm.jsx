@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { X } from 'lucide-react'
 import ExerciseItem from './ExerciseItem'
 import { uid, todayStr } from '../utils/helpers'
 
@@ -59,7 +60,9 @@ export default function WorkoutForm({ routine, onSave, onCancel }) {
             <h2 id="routine-form-title" className="fd" style={{ fontSize: 26, color: '#c8ff00' }}>
               {routine ? 'EDIT ROUTINE' : 'NEW ROUTINE'}
             </h2>
-            <button type="button" className="btn-g" onClick={onCancel} style={{ padding: '5px 10px' }} aria-label="Close">✕</button>
+            <button type="button" className="btn-g" onClick={onCancel} style={{ padding: '5px 10px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Close">
+              <X size={18} strokeWidth={2} />
+            </button>
           </div>
 
           {/* Name field */}

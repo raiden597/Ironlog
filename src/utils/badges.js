@@ -1,109 +1,95 @@
 // Badge definitions and unlock logic.
-// Each badge has an id, name, emoji, description, and a check(logs) function.
+// Each badge has an id, name, description, and a check(logs) function.
+// Icons are rendered via utils/badgeIcons.jsx (Lucide SVGs).
 
 export const BADGES = [
   {
     id: 'first_rep',
     name: 'First Rep',
-    emoji: '🏁',
     desc: 'Log your first session',
     check: (logs) => logs.length >= 1,
   },
   {
     id: 'hat_trick',
     name: 'Hat Trick',
-    emoji: '🎩',
     desc: 'Log 3 sessions',
     check: (logs) => logs.length >= 3,
   },
   {
     id: 'week_warrior',
     name: 'Week Warrior',
-    emoji: '⚔️',
     desc: 'Log 7 sessions',
     check: (logs) => logs.length >= 7,
   },
   {
     id: 'month_strong',
     name: 'Month Strong',
-    emoji: '📅',
     desc: 'Log 30 sessions',
     check: (logs) => logs.length >= 30,
   },
   {
     id: 'century',
     name: 'Century',
-    emoji: '💯',
     desc: 'Log 100 sessions',
     check: (logs) => logs.length >= 100,
   },
   {
     id: 'iron_streak',
     name: 'Iron Streak',
-    emoji: '🔥',
     desc: '7 days in a row',
     check: (logs) => getMaxStreak(logs) >= 7,
   },
   {
     id: 'unstoppable',
     name: 'Unstoppable',
-    emoji: '⚡',
     desc: '14 days in a row',
     check: (logs) => getMaxStreak(logs) >= 14,
   },
   {
     id: 'full_house',
     name: 'Full House',
-    emoji: '✅',
     desc: 'Complete every exercise in a session',
     check: (logs) => logs.some(l => l.exercises.length > 0 && l.exercises.every(e => e.completed)),
   },
   {
     id: 'dedicated',
     name: 'Dedicated',
-    emoji: '🎯',
     desc: '5 sessions in one week',
     check: (logs) => getMaxSessionsInWeek(logs) >= 5,
   },
   {
     id: 'volume_club',
     name: 'Volume Club',
-    emoji: '🏋️',
     desc: 'Lift 10,000kg total',
     check: (logs) => getTotalVolume(logs) >= 10000,
   },
   {
     id: 'tonnage',
     name: 'Tonnage',
-    emoji: '🏔️',
     desc: 'Lift 100,000kg total',
     check: (logs) => getTotalVolume(logs) >= 100000,
   },
   {
     id: 'pr_hunter',
     name: 'PR Hunter',
-    emoji: '🎖️',
     desc: 'Set a new weight PR on any exercise',
     check: (logs) => hasPR(logs),
   },
   {
     id: 'push_master',
     name: 'Push Master',
-    emoji: '💪',
     desc: 'Log a push day 10 times',
     check: (logs) => logs.filter(l => l.routineName.toUpperCase().includes('PUSH')).length >= 10,
   },
   {
     id: 'pull_master',
     name: 'Pull Master',
-    emoji: '🦾',
     desc: 'Log a pull day 10 times',
     check: (logs) => logs.filter(l => l.routineName.toUpperCase().includes('PULL')).length >= 10,
   },
   {
     id: 'leg_day_hero',
     name: 'Leg Day Hero',
-    emoji: '🦵',
     desc: 'Log a leg day 10 times',
     check: (logs) => logs.filter(l => l.routineName.toUpperCase().includes('LEG')).length >= 10,
   },

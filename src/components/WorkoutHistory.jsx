@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
+import { X } from 'lucide-react'
 import { fmtDate } from '../utils/helpers'
 
 /**
@@ -92,7 +93,9 @@ export default function WorkoutHistory({ logs, onDeleteLog }) {
                         {volume > 0 && <span className="pill">{volume.toLocaleString()}kg vol</span>}
                       </div>
                     </div>
-                    <button type="button" className="btn-d" onClick={() => onDeleteLog(log.id)} style={{ padding: '5px 9px', fontSize: 12 }} aria-label="Delete log">✕</button>
+                    <button type="button" className="btn-d" onClick={() => onDeleteLog(log.id)} style={{ padding: '5px 9px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Delete log">
+                      <X size={15} strokeWidth={2} />
+                    </button>
                   </div>
 
                   {/* Completion bar */}

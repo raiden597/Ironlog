@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Check, X } from 'lucide-react'
 import { uid, todayStr } from '../utils/helpers'
 
 /**
@@ -56,7 +57,9 @@ export default function LogModal({ routine, onSave, onClose }) {
               <h2 id="log-modal-title" className="fd" style={{ fontSize: 26, color: '#c8ff00' }}>LOG WORKOUT</h2>
               <p style={{ fontSize: 12, color: '#555', marginTop: 2 }}>{routine.name}{routine.description ? ` · ${routine.description}` : ''}</p>
             </div>
-            <button type="button" className="btn-g" onClick={onClose} style={{ padding: '5px 10px' }} aria-label="Close">✕</button>
+            <button type="button" className="btn-g" onClick={onClose} style={{ padding: '5px 10px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Close">
+              <X size={18} strokeWidth={2} />
+            </button>
           </div>
 
           {/* Date */}
@@ -112,7 +115,10 @@ export default function LogModal({ routine, onSave, onClose }) {
           {/* Actions */}
           <div style={{ display: 'flex', gap: 8 }}>
             <button type="button" className="btn-g" onClick={onClose} style={{ flex: 1 }}>CANCEL</button>
-            <button type="button" className="btn-p" onClick={handleSave} style={{ flex: 2 }}>✓ SAVE LOG</button>
+            <button type="button" className="btn-p" onClick={handleSave} style={{ flex: 2, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+              <Check size={17} strokeWidth={2.5} aria-hidden />
+              SAVE LOG
+            </button>
           </div>
         </div>
       </motion.div>

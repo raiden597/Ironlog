@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { getUnlockedBadges, getCurrentStreak, getMaxStreak } from '../utils/badges'
+import { BADGE_ICONS, BadgeIconFallback } from '../utils/badgeIcons'
 
 export default function Badges({ logs }) {
   const badges  = useMemo(() => getUnlockedBadges(logs), [logs])
@@ -28,7 +29,9 @@ export default function Badges({ logs }) {
 
       {/* ── Badge grid ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 10 }}>
-        {badges.map((b, i) => (
+        {badges.map((b, i) => {
+          const Icon = BADGE_ICONS[b.id] ?? BadgeIconFallback
+          return (
           <motion.div
             key={b.id}
             className="card"
@@ -49,8 +52,15 @@ export default function Badges({ logs }) {
             {b.unlocked && (
               <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 0%, rgba(200,255,0,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
             )}
-            <div style={{ fontSize: 32, marginBottom: 8, filter: b.unlocked ? 'none' : 'grayscale(1)' }}>
-              {b.emoji}
+            <div
+              style={{
+                marginBottom: 8,
+                display: 'flex',
+                justifyContent: 'center',
+                color: b.unlocked ? '#c8ff00' : '#555',
+              }}
+            >
+              <Icon size={30} strokeWidth={b.unlocked ? 2 : 1.5} aria-hidden style={{ opacity: b.unlocked ? 1 : 0.7 }} />
             </div>
             <div className="fd" style={{ fontSize: 14, marginBottom: 4, color: b.unlocked ? '#c8ff00' : '#555' }}>
               {b.name}
@@ -64,7 +74,8 @@ export default function Badges({ logs }) {
               </div>
             )}
           </motion.div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

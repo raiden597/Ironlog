@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Award, ClipboardList, LayoutGrid, LineChart, Plus } from 'lucide-react'
 
 import WorkoutCard    from './components/WorkoutCard'
 import WorkoutForm    from './components/WorkoutForm'
@@ -13,10 +14,10 @@ import { uid, todayStr }            from './utils/helpers'
 import { SEED_ROUTINES, SEED_LOGS } from './data/seed'
 
 const NAV = [
-  ['dashboard', 'Routines', '🏠'],
-  ['history',   'History',  '📋'],
-  ['progress',  'Progress', '📈'],
-  ['badges',    'Badges',   '🏅'],
+  ['dashboard', 'Routines', LayoutGrid],
+  ['history',   'History',  ClipboardList],
+  ['progress',  'Progress', LineChart],
+  ['badges',    'Badges',   Award],
 ]
 
 export default function App() {
@@ -122,9 +123,10 @@ export default function App() {
               type="button"
               className="btn-p"
               onClick={() => { setEditR(null); setShowForm(true) }}
-              style={{ padding: '7px 14px', fontSize: 12 }}
+              style={{ padding: '7px 14px', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}
             >
-              + NEW
+              <Plus size={15} strokeWidth={2.5} aria-hidden />
+              NEW
             </button>
           )}
         </div>
@@ -164,7 +166,10 @@ export default function App() {
               <div style={{ textAlign: 'center', padding: '80px 20px' }}>
                 <div className="fd" style={{ fontSize: 52, color: '#1c1c1c', marginBottom: 10 }}>NO ROUTINES YET</div>
                 <p style={{ fontSize: 13, color: '#3a3a3a', marginBottom: 20 }}>Create your first workout routine to begin tracking</p>
-                <button type="button" className="btn-p" onClick={() => setShowForm(true)}>+ CREATE ROUTINE</button>
+                <button type="button" className="btn-p" onClick={() => setShowForm(true)} style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                  <Plus size={17} strokeWidth={2.5} aria-hidden />
+                  CREATE ROUTINE
+                </button>
               </div>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(290px,1fr))', gap: 14 }}>
@@ -228,7 +233,7 @@ export default function App() {
         paddingBottom: 'env(safe-area-inset-bottom)',
         display: 'flex',
       }}>
-        {NAV.map(([id, label, icon]) => (
+        {NAV.map(([id, label, Icon]) => (
           <button
             key={id}
             type="button"
@@ -236,7 +241,7 @@ export default function App() {
             onClick={() => setView(id)}
             aria-current={view === id ? 'page' : undefined}
           >
-            <span className="bottom-nav-icon" aria-hidden>{icon}</span>
+            <Icon className="bottom-nav-icon" size={22} strokeWidth={2} aria-hidden />
             <span>{label}</span>
           </button>
         ))}

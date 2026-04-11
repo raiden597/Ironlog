@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronDown, Copy, Pencil, Play, Trash2 } from 'lucide-react'
 
 /**
  * WorkoutCard
@@ -53,13 +54,13 @@ export default function WorkoutCard({ routine, onEdit, onDelete, onLog, onDuplic
             {totalVolume > 0 && <span className="pill">{totalVolume.toLocaleString()}kg vol</span>}
           </div>
         </div>
-        {/* Chevron */}
         <motion.span
           animate={{ rotate: expanded ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          style={{ color: '#383838', fontSize: 16, flexShrink: 0, marginTop: 4, display: 'block' }}
+          style={{ color: '#484848', flexShrink: 0, marginTop: 2, display: 'flex' }}
+          aria-hidden
         >
-          ▾
+          <ChevronDown size={20} strokeWidth={2} />
         </motion.span>
       </div>
 
@@ -91,11 +92,20 @@ export default function WorkoutCard({ routine, onEdit, onDelete, onLog, onDuplic
       </AnimatePresence>
 
       {/* ── Action bar ── */}
-      <div style={{ padding: '11px 19px', borderTop: '1px solid #191919', display: 'flex', gap: 7, background: '#0c0c0c' }}>
-        <button type="button" className="btn-p" onClick={() => onLog(routine)}       style={{ flex: 1, padding: '7px 10px', fontSize: 12 }}>▶ LOG</button>
-        <button type="button" className="btn-g" onClick={() => onEdit(routine)}      style={{ padding: '7px 11px', fontSize: 13 }} title="Edit">✏</button>
-        <button type="button" className="btn-g" onClick={() => onDuplicate(routine)} style={{ padding: '7px 11px', fontSize: 13 }} title="Duplicate">⧉</button>
-        <button type="button" className="btn-d" onClick={() => onDelete(routine.id)} style={{ padding: '7px 11px', fontSize: 13 }} title="Delete">🗑</button>
+      <div style={{ padding: '11px 19px', borderTop: '1px solid #191919', display: 'flex', gap: 7, background: '#0c0c0c', alignItems: 'center' }}>
+        <button type="button" className="btn-p" onClick={() => onLog(routine)} style={{ flex: 1, padding: '7px 10px', fontSize: 12, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+          <Play size={14} strokeWidth={2.5} aria-hidden />
+          LOG
+        </button>
+        <button type="button" className="btn-g" onClick={() => onEdit(routine)} style={{ padding: '7px 11px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} title="Edit" aria-label="Edit routine">
+          <Pencil size={16} strokeWidth={2} />
+        </button>
+        <button type="button" className="btn-g" onClick={() => onDuplicate(routine)} style={{ padding: '7px 11px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} title="Duplicate" aria-label="Duplicate routine">
+          <Copy size={16} strokeWidth={2} />
+        </button>
+        <button type="button" className="btn-d" onClick={() => onDelete(routine.id)} style={{ padding: '7px 11px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} title="Delete" aria-label="Delete routine">
+          <Trash2 size={16} strokeWidth={2} />
+        </button>
       </div>
     </motion.div>
   )

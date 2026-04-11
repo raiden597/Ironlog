@@ -249,8 +249,8 @@
   }
   .bottom-nav-tab:active { transform: scale(0.97); }
   .bottom-nav-tab .bottom-nav-icon {
-    font-size: 20px;
-    line-height: 1;
+    display: block;
+    flex-shrink: 0;
     transition: transform .2s var(--il-ease-out), filter .2s;
   }
   .bottom-nav-tab.active {

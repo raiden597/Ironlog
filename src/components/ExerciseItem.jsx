@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { X } from 'lucide-react'
 
 /**
  * ExerciseItem
@@ -63,8 +64,8 @@ export default function ExerciseItem({ ex, onChange, onDelete, idx }) {
         <option>lbs</option>
       </select>
       {/* Remove */}
-      <button type="button" className="btn-d" onClick={onDelete} style={{ padding: '6px 9px', flexShrink: 0, fontSize: 12 }}>
-        ✕
+      <button type="button" className="btn-d" onClick={onDelete} style={{ padding: '6px 9px', flexShrink: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Remove exercise">
+        <X size={14} strokeWidth={2} />
       </button>
     </motion.div>
   )
