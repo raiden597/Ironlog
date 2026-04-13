@@ -10,6 +10,7 @@ import ProgressChart  from './components/ProgressChart'
 import Badges         from './components/Badges'
 import RestTimer      from './components/RestTimer'
 
+import { trackPageView }            from './utils/analytics'
 import { lsGet, lsSet }             from './utils/storage'
 import { uid, todayStr }            from './utils/helpers'
 import { SEED_ROUTINES, SEED_LOGS } from './data/seed'
@@ -32,6 +33,9 @@ export default function App() {
 
   useEffect(() => lsSet('il_routines', routines), [routines])
   useEffect(() => lsSet('il_logs',     logs),     [logs])
+  useEffect(() => {
+    trackPageView(`/${view}`)
+  }, [view])
 
   const saveRoutine = useCallback(r => {
     setRoutines(rs => rs.some(x => x.id === r.id) ? rs.map(x => x.id === r.id ? r : x) : [r, ...rs])
