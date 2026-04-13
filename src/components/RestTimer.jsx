@@ -12,32 +12,58 @@ function formatMmSs(totalSec) {
   return `${m}:${r.toString().padStart(2, '0')}`
 }
 
-function playBeep() {
+/** Reused after unlock on Start — avoids iOS/Safari blocking new AudioContext when the timer ends. */
+let sharedAudioCtx = null
+
+async function primeAudioFromUserGesture() {
   try {
     const AC = window.AudioContext || window.webkitAudioContext
     if (!AC) return
-    const ctx = new AC()
-    if (ctx.state === 'suspended') void ctx.resume()
-    const o = ctx.createOscillator()
-    const g = ctx.createGain()
-    o.type = 'sine'
-    o.frequency.value = 880
-    g.gain.value = 0.09
-    o.connect(g)
-    g.connect(ctx.destination)
-    o.start()
-    setTimeout(() => {
-      o.stop()
-      ctx.close()
-    }, 220)
+    if (!sharedAudioCtx || sharedAudioCtx.state === 'closed') {
+      sharedAudioCtx = new AC()
+    }
+    if (sharedAudioCtx.state === 'suspended') await sharedAudioCtx.resume()
   } catch {
     /* ignore */
   }
 }
 
+function tone(ctx, freq, ms, gain = 0.12) {
+  const o = ctx.createOscillator()
+  const g = ctx.createGain()
+  o.type = 'sine'
+  o.frequency.value = freq
+  g.gain.value = gain
+  o.connect(g)
+  g.connect(ctx.destination)
+  o.start()
+  setTimeout(() => o.stop(), ms)
+}
+
+function playBeep() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext
+    if (!AC) return
+    let ctx = sharedAudioCtx
+    if (!ctx || ctx.state === 'closed') {
+      ctx = new AC()
+      sharedAudioCtx = ctx
+    }
+    if (ctx.state === 'suspended') void ctx.resume()
+    tone(ctx, 880, 180)
+    setTimeout(() => tone(ctx, 660, 220, 0.11), 260)
+    setTimeout(() => tone(ctx, 880, 200, 0.1), 540)
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Android Chrome / Firefox: works. iOS Safari: no Web Vibration API — use sound + flash only. */
 function buzz() {
   try {
-    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([160, 70, 160])
+    if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+      navigator.vibrate([200, 100, 200, 100, 350])
+    }
   } catch {
     /* ignore */
   }
@@ -104,6 +130,7 @@ export default function RestTimer() {
 
   const start = () => {
     if (finishedFlash) return
+    void primeAudioFromUserGesture()
     clearFinishTimer()
     setFinishedFlash(false)
     if (left !== null && left > 0) {
